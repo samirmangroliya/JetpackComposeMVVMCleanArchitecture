@@ -1,4 +1,4 @@
-package com.samir.jetpackcomposemvvmclean.ui.theme
+package com.samir.jetpackcomposemvvmclean.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package com.samir.jetpackcomposemvvmclean.ui.theme
+package com.samir.jetpackcomposemvvmclean.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
