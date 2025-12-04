@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.samir.jetpackcomposemvvmclean.ui.theme.JetpackComposeMVVMCleanTheme
+import com.samir.jetpackcomposemvvmclean.presentation.ui.theme.JetpackComposeMVVMCleanTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
