@@ -12,7 +12,6 @@ import dagger.hilt.android.components.ViewModelComponent
 @Module
 @InstallIn(ViewModelComponent::class)
 object UseCaseModule {
-
     @Provides
     fun provideCatsUseCase(catsRepository: CatsRepository): GetCatsUseCase {
         return GetCatsUseCaseImpl(catsRepository)

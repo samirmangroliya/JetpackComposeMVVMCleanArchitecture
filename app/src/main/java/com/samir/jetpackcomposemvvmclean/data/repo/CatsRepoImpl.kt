@@ -21,7 +21,7 @@ class CatsRepoImpl(private val catApiService: CatApiServiceHelper) : CatsReposit
         }.catch { emit(NetworkResult.Error(it.localizedMessage)) }
 
     override suspend fun fetchFavCats(subId: String) =
-        flow<NetworkResult<List<FavouriteCatsResponse>>> {
+        flow {
             with(catApiService.fetchFavCats(subId)) {
                 if (isSuccessful) {
                     emit(NetworkResult.Success(this.body()))

@@ -148,7 +148,7 @@ fun LoadingBar() {
                 .size(60.dp),
             color = colorResource(id = R.color.purple_700),
             strokeWidth = 5.dp, // Width of the progress indicator's stroke
-            trackColor = Color.Red, // Color of the track behind the progress indicator
+            trackColor =  colorResource(id = R.color.white),// Color of the track behind the progress indicator
             strokeCap = StrokeCap.Round
         )
     }

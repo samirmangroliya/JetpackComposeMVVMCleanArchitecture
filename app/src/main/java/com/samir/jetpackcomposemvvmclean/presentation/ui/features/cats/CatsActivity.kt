@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.core.app.ActivityOptionsCompat
+import com.samir.jetpackcomposemvvmclean.presentation.ui.components.EmptyView
 import com.samir.jetpackcomposemvvmclean.presentation.ui.features.catDetails.CatFullImageActivity
 import com.samir.jetpackcomposemvvmclean.presentation.ui.features.cats.view.CatsScreen
 import com.samir.jetpackcomposemvvmclean.presentation.ui.features.cats.viewmodel.CatsViewModel
@@ -31,7 +32,7 @@ class CatsActivity : ComponentActivity() {
 
         setContent {
             JetpackComposeMVVMCleanTheme {
-                CatsScreenPresentation()
+                EmptyView("Test")
             }
         }
     }

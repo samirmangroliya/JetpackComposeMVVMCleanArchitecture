@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.jacoco)
 }
 
 val secretPropertiesFile: File = rootProject.file("secrets.properties")
@@ -80,6 +81,11 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+}
+
+jacoco {
+    toolVersion = libs.versions.jacocoVersion.get()
 }
 
 dependencies {
@@ -92,11 +98,11 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     //testing library
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
+    //testImplementation(libs.junit)
+   /* androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)*/
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     testImplementation(libs.mockito.core)
@@ -106,28 +112,28 @@ dependencies {
     //For InstantTaskExecutorRule
     testImplementation(libs.androidx.core.testing)
     // Core library
-    androidTestImplementation(libs.androidx.core)
+    //androidTestImplementation(libs.androidx.core)
     implementation(libs.lottie.compose)
     implementation(libs.shimmer.compose)
 
-    androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.androidx.test.rules)
-    androidTestUtil(libs.androidx.test.orchestrator)
+  //  androidTestImplementation(libs.androidx.test.runner)
+  //  androidTestImplementation(libs.androidx.test.rules)
+ //   androidTestUtil(libs.androidx.test.orchestrator)
 
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.room.ktx)
 
     // Assertions
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.test.truth)
-    androidTestImplementation(libs.google.test.truth)
+   // androidTestImplementation(libs.androidx.test.ext.junit)
+  //  androidTestImplementation(libs.androidx.test.truth)
+  //  androidTestImplementation(libs.google.test.truth)
 
     // Espresso dependencies
-    androidTestImplementation(libs.test.espresso.core)
+   /* androidTestImplementation(libs.test.espresso.core)
     androidTestImplementation(libs.test.espresso.contrib)
     androidTestImplementation(libs.test.espresso.intents)
     androidTestImplementation(libs.test.espresso.accessibility)
-    androidTestImplementation(libs.test.idling.concurrent)
+    androidTestImplementation(libs.test.idling.concurrent)*/
 
     implementation(libs.mockito.kotlin)
     implementation(libs.androidx.ui)
@@ -155,4 +161,61 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(kotlin("test"))
 
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.9.5")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.9.5")
+
+// match Compose's test libs (these are the versions Compose 1.9.5 expects)
+    androidTestImplementation("androidx.test:core:1.5.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test:runner:1.5.0")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.0")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.0")
+    androidTestImplementation("androidx.test.espresso:espresso-accessibility:3.5.0")
+}
+
+val jacocoUnitTestReport by tasks.registering(JacocoReport::class) {
+    dependsOn("testDebugUnitTest")
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+
+    val fileFilter = listOf(
+        "**/R.class",
+        "**/R$*.class",
+        "**/BuildConfig.*",
+        "**/Manifest*.*",
+        "**/*Test*.*",
+        "**/Hilt_*.*",
+        "**/*_Factory*.*",
+        "**/*_Impl*.*"
+    )
+
+    // IMPORTANT: include KSP generated classes
+    val debugTree = fileTree("${buildDir}/intermediates/javac/debug") {
+        exclude(fileFilter)
+    }
+    val kspTree = fileTree("${buildDir}/generated/ksp/debug/kotlin") {
+        exclude(fileFilter)
+    }
+
+    classDirectories.setFrom(debugTree, kspTree)
+
+    sourceDirectories.setFrom(
+        "src/main/java",
+        "src/main/kotlin",
+        "${buildDir}/generated/ksp/debug/kotlin"
+    )
+
+    executionData.setFrom(
+        fileTree(buildDir) {
+            include(
+                "jacoco/testDebugUnitTest.exec",
+                "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec"
+            )
+        }
+    )
 }
