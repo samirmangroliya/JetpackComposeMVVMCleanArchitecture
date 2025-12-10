@@ -32,7 +32,7 @@ class CatsActivity : ComponentActivity() {
 
         setContent {
             JetpackComposeMVVMCleanTheme {
-                EmptyView("Test")
+                CatsScreenPresentation()
             }
         }
     }
